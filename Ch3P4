@@ -1,0 +1,22 @@
+#! /bin/bash
+
+
+echo "Files in current directory"
+for filename in *
+do
+	echo $filename
+done
+
+echo -n "What directory do you wish to list? "
+read DirectoryName
+
+echo ""
+echo "Files in $DirectoryName"
+echo ""
+
+cd $DirectoryName
+
+for filename in *
+do
+	echo $filename
+done
