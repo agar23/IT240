@@ -21,7 +21,10 @@ do
 	if [[ -x "$filename"  && -f "$filename" ]]
 	then
 			echo "$filename *"
+	elif [[ -d "$filename" ]]
+	then
+			echo "$filename /"
 	else
-			echo "$filename"
+			echo "$filename "
 	fi
 done
