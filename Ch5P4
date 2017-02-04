@@ -5,7 +5,7 @@
 # arguments, fill in defaults.
 
 case "$#" in
-1)
+1|2)
     date_required=$1
     ;;
 *)
