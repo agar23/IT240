@@ -10,7 +10,7 @@ case "$#" in
     ;;
 *)
     date_required=today
-    ;;    
+    ;;
 esac
 
 case "$#" in
@@ -22,10 +22,7 @@ case "$#" in
     ;;
 esac
 
-
-
-
-cat <<EndOfText
+wall <<EndOfText
 Please complete all TPS reports and have them
 on my desk by EOB $date_required.
 
