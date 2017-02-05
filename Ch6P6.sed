@@ -14,3 +14,4 @@ $ a\
 s/&/\&amp;/g
 s/</\&alt;/g
 s/>/\&gt;/g
+s/trout/<b>trout<\/b>/g
