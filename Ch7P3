@@ -1,0 +1,7 @@
+#! /bin/bash
+
+
+gawk 'BEGIN { format = "%-13s %-16s %-14s %-10s %-10s %-10s\n"
+             printf format, "Country", "Internet domain", "Area in sq. km", "Population", "Land Lines", "Cell phones"
+             printf format, "-------", "---------------", "--------------", "----------", "----------", "-----------"}
+           { printf format, $1, $2, $3, $4, $5, $6 }' countries.txt
