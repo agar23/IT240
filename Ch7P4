@@ -1,8 +1,8 @@
 #! /bin/bash
 
 
-  awk 'BEGIN {celltotal = 0}
-             {landtotal = 0}
-             {celltotal += $6}
-             {landtotal += $5}
+  awk 'BEGIN {celltotal = 0
+             landtotal = 0}
+             {celltotal += $6
+             landtotal += $5}
        END { print "Total ratio of cell phones to all the land-lines in the world = " celltotal " : " landtotal  }' countries.txt;

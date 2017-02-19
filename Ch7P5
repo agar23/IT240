@@ -1,0 +1,16 @@
+#! /bin/bash
+
+awk 'BEGIN {Area = 0
+            population = 0
+            celltotal = 0
+            landtotal = 0}
+           {Area += $3
+            population += $4
+            celltotal += $6
+           landtotal += $5}
+
+      END { print "total of Area is " Area "\n"
+            print "total of population is " population "\n"
+            print "total of land-lines is " landtotal "\n"
+            print "total of cellphones is " celltotal "\n"
+            print "total of everything is " Area+population+landtotal+celltotal "\n" }' countries.txt;
