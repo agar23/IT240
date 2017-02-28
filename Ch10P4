@@ -1,0 +1,19 @@
+#! /bin/bash
+
+echo "*****************************"
+echo "This is an alarm clock!"
+echo "*****************************"
+echo ""
+echo 'Please eneter an amount of seconds until the alarm sounds'
+read Time
+
+sleep $Time
+
+bell(){
+  echo "Beep!"
+  tput bel
+  sleep 1
+  bell
+}
+
+bell

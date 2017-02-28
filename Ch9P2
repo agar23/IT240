@@ -1,0 +1,8 @@
+
+echo "Using backticks in a for loop."
+
+cd /usr/local
+for i in *
+do
+  echo $i
+done
