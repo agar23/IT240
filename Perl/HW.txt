@@ -1,0 +1,62 @@
+#####################################
+#  		Chapter 4 Problem 2
+#####################################
+
+#!/usr/bin/perl -w
+
+sub total{
+        
+		$sum = 0;
+
+        foreach $item (@_){
+                $sum += $item;
+        }
+        return $sum
+}
+
+my @fred = (1..1000);
+my $fred_total = total(@fred);
+print "The total sum from 1 to 1000 is $fred_total.\n";
+
+
+#####################################
+#		Chapter 5 Problem 2
+#####################################
+
+#!/usr/bin/perl -w
+
+print "0123456789" x 5, "\n";
+@array = ();
+
+print "Please enter a list of items: \n";
+
+while (defined($line = <STDIN>)){
+	push (@array, $line);
+	
+}
+
+foreach (@array){
+	printf "%21s",$_;
+}
+
+
+#####################################
+#		Chapter 5 Problem 3
+#####################################
+
+print "0123456789" x 5, "\n";
+
+print "Please eneter column width: \n";
+$width = <STDIN>;
+chomp($width);
+
+print "Please enter a list of items: \n"; 
+@array = ();
+
+while (defined($line = <STDIN>)){
+	push (@array, $line);	
+}
+
+foreach (@array){
+	printf "%${width}s",$_;
+}

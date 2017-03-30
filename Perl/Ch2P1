@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+use diagnostics;
+
+$pie = 3.141592654;
+
+print "The Circumfarance of a circle with a radius of 12.5 is: " . 2 * $pie * 12.5 . "\n";
