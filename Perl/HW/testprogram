@@ -1,0 +1,12 @@
+#!/usr/bin/perl -w
+
+while(<>){
+  chomp;
+  if (/a\b/){
+    my $word = $1;
+    print "Matched: |$`<$&>$'|\n";
+    print $word
+  } else {
+    print "No match: |$_|\n";
+  }
+}
