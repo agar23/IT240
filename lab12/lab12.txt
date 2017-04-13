@@ -1,0 +1,66 @@
+#!/usr/bin/perl -w
+
+###############################
+#	Chapter 10 Problem 1
+###############################
+
+#!/usr/bin/perl -w
+
+$num = int(1 + rand 100);
+
+print "Please guess a number from 1 to 100!";
+while (<STDIN>) {
+
+        if ($_ eq "quit\n" || $_ eq "exit\n" || $_ eq "\n"){
+                last;
+        }elsif ($_ == $num){
+                print "You win!\n";
+                last;
+        }elsif ($_ < $num){
+                print "To low! try again: ";
+        }elsif ($_ > $num){
+                print "To high! try again: ";
+
+        }
+}
+
+##############################
+#	Chapter 10 Problem 2
+##############################
+
+#!/usr/bin/perl -w
+
+$num = int(1 + rand 100);
+
+print "Do you want to turn debug on 1 for yes 2 for no: ";
+$debug = <STDIN>;
+
+print "Please guess a number from 1 to 100!";
+
+$count=0;
+while (<STDIN>) {
+
+
+        if ($_ eq "quit\n" || $_ eq "exit\n" || $_ eq "\n"){
+                last;
+        }elsif ($_ == $num){
+                print "You win!\n";
+                last;
+        }elsif ($_ < $num){
+                print "To low! try again: ";
+                if ($debug == 1 ){
+                         if ($count == 1){
+                        print "HINT!!! the number I choose the number $num\n";
+                        }
+                }
+        }elsif ($_ > $num){
+                print "To high! try again: ";
+                if ($debug == 1 ){
+                         if ($count == 1){
+                        print "HINT!!! the number I choose the number $num\n";
+                }
+        }
+        }
+        $count++;
+}
+
