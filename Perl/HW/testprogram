@@ -2,10 +2,9 @@
 
 while(<>){
   chomp;
-  if (/a\b/){
-    my $word = $1;
+  if (/(\w*a\b)/){
     print "Matched: |$`<$&>$'|\n";
-    print $word
+    print "'The matched word is $1'\n";
   } else {
     print "No match: |$_|\n";
   }
