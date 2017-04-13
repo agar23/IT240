@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-
+## Copyright (c) 2017 by yours truly
 #Open a file subsitute a word and print out to new file
 
 $^I = ".out";
@@ -16,9 +16,3 @@ foreach(<INFILE>){
 
 close INFILE;
 close OUTFILE1;
-
-
-
-
-
-

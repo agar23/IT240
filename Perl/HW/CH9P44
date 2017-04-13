@@ -1,0 +1,14 @@
+#!/usr/bin/perl -w
+
+#opens a file and writes to it makes backup
+$^I = ".out";
+while (<>){
+  print;
+  last if $. == 1;
+}
+
+print "## Copyright (c) 2017 by yours truly";
+
+while (<>){
+  print;
+}
