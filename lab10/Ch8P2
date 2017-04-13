@@ -1,7 +1,0 @@
-#!/usr/bin/perl -w
-
-while (<>) {
-	if (/fred|Fred/) {
-		print;
-	}
-}
