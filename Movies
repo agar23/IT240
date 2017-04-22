@@ -1,0 +1,67 @@
+#!/bin/bash
+
+mkdir temp
+cd temp
+
+echo "Please eter your zip-code!"
+echo -n "> "
+read zip
+
+content=$(wget https://www.moviefone.com/showtimes/miami-fl/$zip/theaters/ -q   -)
+cat index.html | grep -o 'class="theater-name" href="https://www.moviefone.com/theater/.*</a><a class="favorite-add"' >> temp.txt
+cat temp.txt | grep -o '>.*</' >> temp2.txt
+rm temp.txt
+
+sed 's/>//g' temp2.txt >> temp.txt
+rm temp2.txt
+sed 's/<\///g' temp.txt >> theaters.txt
+rm temp.txt
+
+readarray theaters < theaters.txt
+
+MovieCount=1
+input="theaters.txt"
+while IFS= read -r var
+  do
+  awk '/id="theater'$MovieCount'"/,/id="theater'`expr $MovieCount + 1`'/' index.html >> temp6.txt
+  cat temp6.txt | grep -o 'class="movietitle">.*</a>' >> temp.txt
+  rm temp6.txt
+  cat temp.txt | grep -o 'title=".*</' >> temp3.txt
+  rm temp.txt
+  cat temp3.txt | grep -o '>.*<' >> temp4.txt
+  rm temp3.txt
+  sed 's/>//g' temp4.txt >> temp.txt
+  rm temp4.txt
+  sed 's/<//g' temp.txt >> "$var"
+  rm temp.txt
+  MovieCount=`expr $MovieCount + 1`
+done < "$input"
+
+printf "\n"
+
+echo "Please pick a movie theater near you! (Enter Number)"
+
+for i in 1 2 3 4 5;
+do
+  printf '%s\n' "$i:${theaters[`expr $i - 1`]}"
+done
+
+echo -n "> "
+read choice1
+answer=`expr $choice1 - 1`
+file="${theaters[$answer]}"
+
+out="$(echo "$file")"
+sed -e 's/$/:/' -i "${out}"
+
+echo "Please pick a movie! "
+printf "\n"
+
+wc --lines "${out}" >> temp.txt
+read lines words characters filename < temp.txt
+
+readarray movies < "${out}"
+
+for ((i=1; i<=lines; i++)); do
+   echo -n "$i: ${movies[`expr $i - 1`]}"
+done
