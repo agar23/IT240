@@ -116,7 +116,7 @@ do
 
   if [ "$choice3" == "n" ];
   then
-    echo "Goodbey!"
+    echo "Goodbye!"
     cd ..
     rm -rf temp/
     break
