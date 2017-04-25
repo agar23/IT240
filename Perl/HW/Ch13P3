@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+#####################################
+#   Chapter 13 Problem 3
+#   Alfonso Austin -aga23
+#####################################
+
+use Cwd;
+
+print "Please eneter a Dir name:  ";
+$dir = <STDIN>;
+chomp($dir);
+
+if ($dir =~ /^ *$/) {
+  chdir glob('~') or die "Directory not found: $!\n";
+
+  while(<{.,}*>){
+    print "$_\n";
+
+  }
+}else{
+  chdir $dir or die "Directory not found: $!\n";
+
+
+  opendir DIR, "." or die "cant open dir";
+  foreach (sort readdir DIR){
+    print "$_\n";
+    }
+}

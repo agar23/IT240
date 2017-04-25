@@ -1,0 +1,129 @@
+#!/bin/bash
+######################################################
+#       NJIT Spring 2017 IT240 Final Project
+#       Alfonso Austin
+######################################################
+
+while true
+do
+
+  mkdir temp
+  cd temp
+  printf "\n"
+  echo "#############################################"
+  echo "#      Welcome to the Movie finder tool!"
+  echo "#############################################"
+  printf "\n"
+  echo -n "> "
+  echo "Please enter your 5-digit zip-code!"
+  printf "\n"
+  echo -n "> "
+  read zip
+
+  content=$(wget https://www.moviefone.com/showtimes/miami-fl/$zip/theaters/ -q   -)
+  cat index.html | grep -o 'class="theater-name" href="https://www.moviefone.com/theater/.*</a><a class="favorite-add"' >> temp.txt
+  cat temp.txt | grep -o '>.*</' >> temp2.txt
+  rm temp.txt
+
+  sed 's/>//g' temp2.txt >> temp.txt
+  rm temp2.txt
+  sed 's/<\///g' temp.txt >> theaters.txt
+  rm temp.txt
+
+  readarray theaters < theaters.txt
+
+  MovieCount=1
+  input="theaters.txt"
+  while IFS= read -r var
+    do
+      awk '/id="theater'$MovieCount'"/,/id="theater'`expr $MovieCount + 1`'/' index.html >> temp6.txt
+      cat temp6.txt | grep -o 'class="movietitle">.*</a>' >> temp.txt
+      rm temp6.txt
+      cat temp.txt | grep -o 'title=".*</' >> temp3.txt
+      rm temp.txt
+      cat temp3.txt | grep -o '>.*<' >> temp4.txt
+      rm temp3.txt
+      sed 's/>//g' temp4.txt >> temp.txt
+      rm temp4.txt
+      sed 's/<//g' temp.txt >> "$var"
+      rm temp.txt
+      MovieCount=`expr $MovieCount + 1`
+  done < "$input"
+
+  printf "\n"
+  echo "Please pick a movie theater near you! (Enter Number)"
+
+  for i in 1 2 3 4 5;
+  do
+    printf '%s\n' "$i:${theaters[`expr $i - 1`]}"
+  done
+
+  echo -n "> "
+  read choice1
+  answer=`expr $choice1 - 1`
+  file="${theaters[$answer]}"
+
+  out="$(echo "$file")"
+
+  printf "\n"
+  echo "Please pick a movie! (Enter Number)"
+  printf "\n"
+
+
+  wc --lines "${out}" >> temp.txt
+  read lines words characters filename < temp.txt
+
+  readarray movies < "${out}"
+
+  for ((i=1; i<=lines; i++)); do
+    echo -n "$i: ${movies[`expr $i - 1`]}"
+  done
+
+  rm temp.txt
+  sed -e 's/$/:/' -i "${out}"
+
+  printf "\n"
+  echo -n "> "
+  read choice2
+  printf "\n"
+  mTimes="$movies[$choice2]"
+
+  MovieCount1=$choice1
+  input="theaters.txt"
+  fcount=1
+  while IFS= read -r var1
+  do
+    awk '/id="theater'$MovieCount1'"/,/id="theater'`expr $MovieCount1 + 1`'/' index.html >> temp6.txt
+    cat temp6.txt | grep -o 'class="showtimes-list".*class="clear"' >> temp.txt
+    rm temp6.txt
+    input1="temp.txt"
+    echo "The times for that movie today are:  "
+    while IFS='' read -r line || [[ -n "$line" ]]; do
+      echo "$line" | grep -o '[1]*[0-9]:[0-9][0-9][a-z][a-z]' >> "$fcount.txt"
+      fcount=`expr $fcount + 1`
+    done < "$input1"
+    MovieCount=`expr $MovieCount1 + 1`
+    break
+  done < "$input"
+
+  printf "\n"
+  cat $choice2".txt"
+
+  printf "\n"
+  echo "Do you want to start over?(y/n)"
+  echo -n "> "
+  read choice3
+
+  if [ "$choice3" == "n" ];
+  then
+    echo "Goodbey!"
+    cd ..
+    rm -rf temp/
+    break
+  fi
+
+  clear
+  cd ..
+  rm -rf temp/
+
+done
