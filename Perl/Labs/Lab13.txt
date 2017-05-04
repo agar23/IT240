@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+
+$name = shift @ARGV;
+$age = -M $name;
+
+foreach (@ARGV){
+
+	$cAge = -M $_;
+	$cName = $_;
+	if ( $cAge > $age){
+		$name = $cName;
+	}
+}
+
+print "the oldest file is $name \n";
+
+
+
+#!/usr/bin/perl -w 
+
+use Cwd;
+
+print "Please eneter a Dir name:  ";
+$dir = <STDIN>;
+chomp($dir);
+
+
+chdir("$dir") or die "Directory not found: $!\n";
+print(cwd);
+

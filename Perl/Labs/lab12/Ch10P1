@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+
+$num = int(1 + rand 100);
+
+print "Please guess a number from 1 to 100!";
+while (<STDIN>) {
+
+	if ($_ eq "quit\n" || $_ eq "exit\n" || $_ eq "\n"){
+                last;
+        }elsif ($_ == $num){
+		print "You win!\n";
+		last;	
+	}elsif ($_ < $num){
+		print "To low! try again: ";
+	}elsif ($_ > $num){
+		print "To high! try again: ";
+
+	}
+}
+

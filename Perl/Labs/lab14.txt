@@ -1,0 +1,40 @@
+#!/usr/bin/perl -w
+
+my $temp_directory = "/tmp/myprog.$$";
+mkdir $temp_directory, 0700 or die "Cannot create $temp_directory: $!";
+
+sub clean_up {
+
+	unlink glob "$temp_directory/*";
+	rmdir $temp_directory;
+}
+#sub my_int_handler {
+#	&clean_up();
+#	die "interrupt, exiting..\n";
+#}
+
+my $int_count = 0;
+sub my_int_handler { $int_count++ }
+$SIG{'INT'} = 'my_int_handler';
+
+use Cwd;
+chomp($temp_directory);
+
+
+chdir("$temp_directory") or die "Directory not found: $!\n";
+
+my $filename = 'temp.txt';
+open(my $fh, '>', $filename);
+print $fh "blah blah blah";
+
+
+while(<$int_count < 1>){
+	print "wait............... lol";
+	if ($int_count){
+		print "press control c again to exit";
+		&clean_up();
+		last
+	}
+}
+
+

@@ -4,38 +4,26 @@
 #       Alfonso Austin
 ######################################################
 
-while true
-do
+function get_data {
 
-  mkdir temp
-  cd temp
-  printf "\n"
-  echo "#############################################"
-  echo "#      Welcome to the Movie finder tool!"
-  echo "#############################################"
-  printf "\n"
-  echo -n "> "
-  echo "Please enter your 5-digit zip-code!"
-  printf "\n"
-  echo -n "> "
-  read zip
-
-  content=$(wget https://www.moviefone.com/showtimes/miami-fl/$zip/theaters/ -q   -)
+  content=$(wget https://www.moviefone.com/showtimes/miami-fl/$1/theaters/ -q -)
   cat index.html | grep -o 'class="theater-name" href="https://www.moviefone.com/theater/.*</a><a class="favorite-add"' >> temp.txt
   cat temp.txt | grep -o '>.*</' >> temp2.txt
   rm temp.txt
 
   sed 's/>//g' temp2.txt >> temp.txt
   rm temp2.txt
-  sed 's/<\///g' temp.txt >> theaters.txt
+  sed 's/<\///g' temp.txt >> temp2.txt
   rm temp.txt
+  sed 's/\&amp;/\&/g' temp2.txt >> theaters.txt
+  rm temp2.txt
 
   readarray theaters < theaters.txt
 
   MovieCount=1
   input="theaters.txt"
   while IFS= read -r var
-    do
+  do
       awk '/id="theater'$MovieCount'"/,/id="theater'`expr $MovieCount + 1`'/' index.html >> temp6.txt
       cat temp6.txt | grep -o 'class="movietitle">.*</a>' >> temp.txt
       rm temp6.txt
@@ -50,20 +38,77 @@ do
       MovieCount=`expr $MovieCount + 1`
   done < "$input"
 
-  printf "\n"
-  echo "Please pick a movie theater near you! (Enter Number)"
+}
 
-  for i in 1 2 3 4 5;
-  do
-    printf '%s\n' "$i:${theaters[`expr $i - 1`]}"
-  done
+printf "\n"
+echo "#############################################"
+echo "#      Welcome to the Movie finder tool!"
+echo "#############################################"
+printf "\n"
 
-  echo -n "> "
-  read choice1
-  answer=`expr $choice1 - 1`
-  file="${theaters[$answer]}"
+mode=0
+permZip=0
+permAnswer1=0
 
-  out="$(echo "$file")"
+while true
+do
+  mkdir temp
+  cd temp
+
+  if [ "$mode" == 0 ];
+  then
+    echo "Please enter your 5-digit zip-code!"
+    printf "\n"
+    echo -n "> "
+    read zip
+
+    get_data $zip
+
+    printf "\n"
+    echo "Please pick a movie theater near you! (Enter Number)"
+
+    for i in 1 2 3 4 5;
+    do
+      printf '%s\n' "$i:${theaters[`expr $i - 1`]}"
+    done
+
+    echo -n "> "
+    read choice1
+    answer=`expr $choice1 - 1`
+    file="${theaters[$answer]}"
+
+    out="$(echo "$file")"
+
+  elif [ "$mode" == 1 ];
+  then
+
+    get_data $permZip
+
+    file="${theaters[$permAnswer1]}"
+
+    out="$(echo "$file")"
+
+  elif [ "$mode" == 2 ];
+  then
+
+    get_data $permZip
+
+    printf "\n"
+    echo "Please pick a movie theater near you! (Enter Number)"
+
+    for i in 1 2 3 4 5;
+    do
+      printf '%s\n' "$i:${theaters[`expr $i - 1`]}"
+    done
+
+    echo -n "> "
+    read choice1
+    answer=`expr $choice1 - 1`
+    file="${theaters[$answer]}"
+
+    out="$(echo "$file")"
+
+  fi
 
   printf "\n"
   echo "Please pick a movie! (Enter Number)"
@@ -90,7 +135,12 @@ do
 
   MovieCount1=$choice1
   input="theaters.txt"
-  fcount=1
+  if [ "$MovieCount1" == 1 ] || [ "$MovieCount1" == 3 ];
+  then
+    fcount=1
+  else
+    fcount=0
+  fi
   while IFS= read -r var1
   do
     awk '/id="theater'$MovieCount1'"/,/id="theater'`expr $MovieCount1 + 1`'/' index.html >> temp6.txt
@@ -110,20 +160,36 @@ do
   cat $choice2".txt"
 
   printf "\n"
-  echo "Do you want to start over?(y/n)"
+  echo "Please select what you wish to do next! (Enter Number)"
+  printf "\n"
+  echo "1: Select a diffrent movie"
+  echo "2: Select a diffrent theater"
+  echo "3: Start over"
+  echo "4: Exit program"
+  printf "\n"
   echo -n "> "
   read choice3
 
-  if [ "$choice3" == "n" ];
+  if [ "$choice3" == "4" ];
   then
     echo "Goodbye!"
     cd ..
     rm -rf temp/
     break
+  elif [ "$choice3" == "1" ];
+  then
+    mode=1
+    permZip=$zip
+    permAnswer1=$answer
+  elif [ "$choice3" == "2" ];
+  then
+    mode=2
+    permZip=$zip
+  else
+    mode=0
   fi
 
   clear
   cd ..
   rm -rf temp/
-
 done

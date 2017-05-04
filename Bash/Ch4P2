@@ -1,0 +1,9 @@
+#! /bin/bash
+
+for i in $*
+do
+  if [ $i != "" ]; then
+    echo "$i"
+  fi
+done
+echo "number of command line arguments is $#"
