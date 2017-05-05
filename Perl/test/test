@@ -1,0 +1,35 @@
+#!/usr/bin/perl -w
+
+###########################################
+#     How to create a subroutine
+############################################
+
+sub total{
+        $sum = 0;
+
+        foreach $item (@_){
+                $sum += $item;
+        }
+        return $sum
+}
+
+my @fred = 1..100;
+my $fred_total = total(@fred);
+
+print "total is $fred_total \n";
+
+#########################################
+#     How to create a hash
+#########################################
+
+my %friends;
+
+$friends{'Chris'} = 'Rubio';
+$friends{'Alec'} = 'Marceles';
+$friends{'Sarah'} = 'Fakhoury';
+
+print "Please enter a person name to look up:  \n";
+$name = <STDIN>;
+chomp($name);
+
+print "The person last name is: $friends{$name} \n";
